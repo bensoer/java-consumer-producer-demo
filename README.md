@@ -16,3 +16,11 @@ To run:
 ````
 C:\MyGitRepo java monitors/ConsumerProducer
 ````
+
+# Optional Arguments
+The ConsumerProducer program can be run with 2 additional optional arguments passed at initialization. The first parameter is the number of seconds the program will run before terminating itself. The second parameter is to give the size of the internal shared buffer. If either of these parameters are exempt default values of infinite time and 20 units in the buffer are used.
+````
+C:\MyGitRepo java monitors/ConsumerProducer 20  // runs the program for 20 seconds with default buffer size
+
+C:\MyGitRepo java monitors/ConsumerProducer 45 12 // runs the program for 45 seconds with buffer size of 12 units
+````
