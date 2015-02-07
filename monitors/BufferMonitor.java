@@ -3,7 +3,16 @@ package monitors;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
-
+/**
+ * BufferMonitor is the monitor that is protecting the shared buffer between the Consumer and
+ * Producer threads. The implementation uses locks to ensure mutual exclusion and synchronization.
+ * Conditional variables and a number of counting variables are used to keep track of the state
+ * of the buffer. The buffer used in the monitor is an array but it is implemented to mimick a
+ * circular buffer by using "front" and "rear" variables to keep track where each end is.
+ * 
+ * @author bensoer
+ *
+ */
 public class BufferMonitor {
 
 	private final int buffer[];
@@ -14,8 +23,11 @@ public class BufferMonitor {
     private final Condition notFull = lock.newCondition();
     private final Condition notEmpty = lock.newCondition();
     
+    /** count - keeps track how many items are in the buffer **/
     private int count = 0;
+    /** front - keeps track of the index of the front of the buffer **/
     private int front = 0;
+    /** rear - keeps track of the index of the end of the buffer **/
     private int rear = 0;
     
     public BufferMonitor(int bufferSize){
@@ -23,6 +35,13 @@ public class BufferMonitor {
     	this.bufferSize = bufferSize;
     }
 	
+    /**
+     * addToBuffer adds the parameter passed value to the end of the buffer ensuring mutual exclusion
+     * with locks and synchronization with await() and signal(). This method is meant to be used by
+     * the producer
+     * @param value the int value to be placed at the front of the buffer
+     * @throws InterruptedException
+     */
 	public void addToBuffer(int value) throws InterruptedException{
 		lock.lock();
 		
@@ -40,14 +59,18 @@ public class BufferMonitor {
 
             notEmpty.signal();
 		}finally{
-			//System.out.println("ADD TO BUFFER COMPLETE");
-			//System.out.println("count is: " + count + "front is: " + front + "rear is: " + rear);
 			lock.unlock();
 			
 		}
 		
 	}
-	
+	/**
+	 * fetchFromBuffer fetches the next item from the front of the buffer ensuring mutual exclusion
+	 * with locks and synchronization with await() and signal(). This method is meant to be used by
+	 * the consumer
+	 * @return and int value from the buffer
+	 * @throws InterruptedException
+	 */
 	public int fetchFromBuffer() throws InterruptedException{
 		lock.lock();
 		
@@ -61,14 +84,10 @@ public class BufferMonitor {
             front = (front + 1) % bufferSize;
             count--;
             
-            
-
             notFull.signal();
 
             return result;
 		}finally{
-			//System.out.println("FETCH FROM BUFFER COMPLETE");
-			//System.out.println("count is: " + count + "front is: " + front + "rear is: " + rear);
 			lock.unlock();
 		}
 	}

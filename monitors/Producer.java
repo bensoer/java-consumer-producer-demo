@@ -1,7 +1,14 @@
 package monitors;
 
 import java.util.Random;
-
+/**
+ * Producer is the producer thread class in the Consumer Producer problem. It will consume the first item
+ * in the buffer. Thread.sleep is used to immitate inconsistent timing of the producer as would be in an
+ * operating system
+ * 
+ * @author bensoer
+ *
+ */
 public class Producer extends Thread{
 
 	private final BufferMonitor sharedBuffer;
@@ -36,8 +43,14 @@ public class Producer extends Thread{
 		}
 		System.out.println("Producer: Terminating Thread");
 	}
-	
+	/**
+     * thereIsStillTime determines if there is still time to continue running in the program
+     * or if it should terminate
+     * @return boolean - true means there is still time, false means there is not and the
+     * thread should terminate
+     */
 	private boolean thereIsStillTime(){
+		// default set value to mean infinite time was selected
 		if(durationTime == -1){
     		return true;
     	}

@@ -1,7 +1,14 @@
 package monitors;
 
 import java.util.Random;
-
+/**
+ * Consumer is the consumer thread class in the Consumer Producer problem. It will produce random 
+ * integers and then attempt to place it on the buffer. Thread.sleep is used to immitate inconsistent 
+ * timing of the consumer as would be in a real operating system
+ * 
+ * @author bensoer
+ *
+ */
 public class Consumer extends Thread{
 
 	private final BufferMonitor sharedBuffer; 
@@ -35,8 +42,14 @@ public class Consumer extends Thread{
 		}
     	System.out.println("Consumer: Terminating Thread");
     }
-    
+    /**
+     * thereIsStillTime determines if there is still time to continue running in the program
+     * or if it should terminate
+     * @return boolean - true means there is still time, false means there is not and the
+     * thread should terminate
+     */
     private boolean thereIsStillTime(){
+    	// default set value to mean infinite time was selected
     	if(durationTime == -1){
     		return true;
     	}

@@ -2,8 +2,11 @@ package monitors;
 
 /**
  * ConsumerProducer is the main entry point for running the the Producer Consumer program. Passing a first
- * argument to the program sets the size of the buffer used in the program
- * @author Ben
+ * argument to the program sets the time in seconds the program will run. Passing a second argument will set
+ * the buffer size used in the program. If neither are supplied, the default buffer size of 20 and time of
+ * infinite will be used
+ * 
+ * @author bensoer
  *
  */
 public class ConsumerProducer {
