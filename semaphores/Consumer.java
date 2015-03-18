@@ -5,7 +5,14 @@ import java.util.Random;
 import java.util.concurrent.Semaphore;
 
 import com.sun.corba.se.impl.orbutil.concurrent.Mutex;
-
+/**
+ * Consumer is the consumer thread that takes the last element from the buffer and consumes
+ * it in the producer-consumer problem. It will first check bufferEmpty to determine whether
+ * the buffer has content, then it will acquire access with the access mutex to check if it can
+ * access the buffer. It will then consume the value by printing it to the screen
+ * @author bensoer
+ *
+ */
 public class Consumer extends Thread{
 
 	private final List<Integer> sharedBuffer;

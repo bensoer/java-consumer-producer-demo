@@ -5,7 +5,17 @@ import java.util.Random;
 import java.util.concurrent.Semaphore;
 
 import com.sun.corba.se.impl.orbutil.concurrent.Mutex;
-
+/**
+ * Producer is the producer thread that will produce items to place on the shared buffer
+ * in the conumer-producer problem. It will first acquire a spot on the bufferFull semaphore
+ * so as to ensure that the shared buffer is not full. It will then acquire the access mutex
+ * so as to make sure that nothing else is currently reading / writing to the shared buffer.
+ * It will then produce a random integer which it will place on the buffer. After which it will
+ * release the access mutex and release on the bufferEmpty semaphore so as to signal to the
+ * consumer that there is an item available in the buffer
+ * @author bensoer
+ *
+ */
 public class Producer extends Thread{
 	
 	private final List<Integer> sharedBuffer;
